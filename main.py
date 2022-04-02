@@ -1,3 +1,5 @@
+from concurrent.futures import thread
+from threading import Thread
 from tkinter import *
 import pyautogui 
 from vosk import Model, KaldiRecognizer
@@ -5,65 +7,69 @@ from time import sleep
 import json, pyaudio
 import pyttsx3
 
-root=Tk()
-root.geometry("309x310")
-root.resizable(width=False, height=False)
-root.title("слова в текст ")
-root.iconbitmap(r'icons/rec.ico')
 
+def window1():
 
-# загружаем картинку
-loadimage = PhotoImage(file="icons/record.png")
-roundedbutton = Button(root, image=loadimage) 
-roundedbutton["border"] = "0" # Обязательно убираем border!!
-roundedbutton.pack()
+    root=Tk()
+    root.geometry("309x310")
+    root.resizable(width=False, height=False)
+    root.title("слова в текст ")
+    root.iconbitmap(r'icons/rec.ico')
 
 
 
 
 
 
-def iop12(event):
-    # тут начинает работает микрофон и после проверка
-    model= Model("vosksmall")
-    rec= KaldiRecognizer(model,16000)
-    p=pyaudio.PyAudio()
-    stream=p.open(format=pyaudio.paInt16,channels=1, rate=16000,input=True,frames_per_buffer=8000)
-    stream.start_stream()
 
-    def listen():
-        while True:
-            data=stream.read(4000,exception_on_overflow=False)
-            if (rec.AcceptWaveform(data)) and (len(data)>0):
-                answer=json.loads(rec.Result())
-                if answer ["text"]:
-                    yield answer ["text"]
 
-    for text in listen():
-        print(text) #  выводит на консоль то что слышал !!!!
+    def iop12():
+           #создание звука голос 
+        tts = pyttsx3.init()
+        voices = tts.getProperty('voices')
+        tts.setProperty('voice', 'ru') 
+          # Попробовать установить предпочтительный голос
+        for voice in voices:
+            if voice.name == 'Irina':
+                tts.setProperty('voice', voice.id)
+         #c tts.say(text)
+        tts.say("чтобы выйти, или закрыть программу скажите выйти!")
+        tts.runAndWait()
+        
+
+        # тут начинает работает микрофон и после проверка
+        model= Model("vosksmall")
+        rec= KaldiRecognizer(model,16000)
+        p=pyaudio.PyAudio()
+        stream=p.open(format=pyaudio.paInt16,channels=1, rate=16000,input=True,frames_per_buffer=8000)
+        stream.start_stream()
+    
+        def listen():
+            while True:
+                data=stream.read(4000,exception_on_overflow=False)
+                if (rec.AcceptWaveform(data)) and (len(data)>0):
+                        answer=json.loads(rec.Result())
+                        if answer ["text"]:
+                            yield answer ["text"]
+
+        for text in listen():
+            print(text) #  выводит на консоль то что слышал !!!!
     
 
 
-    #создание звука голос 
-        tts = pyttsx3.init()
-    voices = tts.getProperty('voices')
-    tts.setProperty('voice', 'ru') 
-    # Попробовать установить предпочтительный голос
-    for voice in voices:
-        if voice.name == 'Irina':
-           tts.setProperty('voice', voice.id)
-    #c tts.say(text)
-    tts.say("проверка")
-    tts.runAndWait()
+
     
 
     
  
-    # условные операторы проверка текста 
-    if  text =="выйти":
-        print("Все норм начили рабоать ")
-    elif text =="как твойии дела":
-        print("вопрос был как твойии дела!!!")
+        # условные операторы проверка текста 
+            if  text =="выход":
+                tts.say("отключаюсь!")
+                tts.runAndWait()
+                root.quit()
+                root.quit()
+            elif text =="как твойии дела":
+                print("вопрос был как твойии дела!!!")
 
 
 
@@ -71,7 +77,31 @@ def iop12(event):
     
 
 
-    tts.runAndWait()# голос закрытия как Mainloop
+        tts.runAndWait()# голос закрытия как Mainloop
+
+            
+
+
+
+
+
+
+        
+    
+
+
+    
+# загружаем картинку
+
+
+    loadimage = PhotoImage(file="icons/record.png")
+    roundedbutton = Button(root, image=loadimage,command=iop12) 
+    roundedbutton["border"] = "0" # Обязательно убираем border!!!
+    roundedbutton.grid(column=0,row=0)
+
+
+
+    
 
 
 
@@ -80,10 +110,19 @@ def iop12(event):
 
 
 
-roundedbutton.bind("<Button-1>",iop12)
+    root.mainloop()
 
 
 
 
 
-root.mainloop()
+
+
+window1()
+
+
+
+
+
+
+
