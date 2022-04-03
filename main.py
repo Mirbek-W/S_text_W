@@ -1,6 +1,7 @@
 from concurrent.futures import thread
 from threading import Thread
 from tkinter import *
+
 import pyautogui 
 from vosk import Model, KaldiRecognizer
 from time import sleep 
@@ -54,6 +55,7 @@ def window1():
 
         for text in listen():
             print(text) #  выводит на консоль то что слышал !!!!
+            pyautogui.press(text)
     
 
 
@@ -64,10 +66,10 @@ def window1():
  
         # условные операторы проверка текста 
             if  text =="выход":
-                tts.say("отключаюсь!")
+                tts.say("отключение микрофона!")
                 tts.runAndWait()
-                root.quit()
-                root.quit()
+                return
+                
             elif text =="как твойии дела":
                 print("вопрос был как твойии дела!!!")
 
