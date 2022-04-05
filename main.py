@@ -1,10 +1,8 @@
 from concurrent.futures import thread
 from threading import Thread
 from tkinter import *
-
 import pyautogui 
-from vosk import Model, KaldiRecognizer
-from time import sleep 
+from vosk import Model, KaldiRecognizer  
 import json, pyaudio
 import pyttsx3
 from pywinauto.keyboard import send_keys, KeySequenceError
@@ -35,13 +33,14 @@ def window1():
             if voice.name == 'Irina':
                 tts.setProperty('voice', voice.id)
          #c tts.say(text)
-        tts.say("запуск подождите 30 секунд, а чтобы отключить микрофон скажите выход!")
+        tts.say("запуск, подождите 30 секунд, а чтобы отключить микрофон скажите выход!")
         tts.runAndWait()
-        
 
+          
+        href1=("vosksmall")
         # тут начинает работает микрофон и после проверка
-        model= Model("vosksmall")
-        rec= KaldiRecognizer(model,16000)
+        model= Model(href1) #путь к модели 
+        rec= KaldiRecognizer(model,16000) 
         p=pyaudio.PyAudio()
         stream=p.open(format=pyaudio.paInt16,channels=1, rate=16000,input=True,frames_per_buffer=8000)
         stream.start_stream()
@@ -71,10 +70,6 @@ def window1():
                 tts.say("отключение микрофона!")
                 tts.runAndWait()
                 return
-                
-            elif text =="как твойии дела":
-                print("вопрос был как твойии дела!!!")
-
             elif text =="абзац" or text=="новая строка":
                 pyautogui.press("enter")
             elif text=="точка" :
@@ -87,7 +82,6 @@ def window1():
                 pyautogui.press("?")
             elif text=="точка с запятой":
                 pyautogui.press(";")
-
             elif text=="двоеточие":
                 pyautogui.press(":")
             elif text=="восклицательный знак":
@@ -101,7 +95,6 @@ def window1():
             elif text=="удалить":
                 pyautogui.press("backspace")
             else:
-
                 send_keys(text, with_spaces=True) #выводит то что находиться на text 
 
 
