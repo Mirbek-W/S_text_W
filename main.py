@@ -7,6 +7,7 @@ from vosk import Model, KaldiRecognizer
 from time import sleep 
 import json, pyaudio
 import pyttsx3
+from pywinauto.keyboard import send_keys, KeySequenceError
 
 
 def window1():
@@ -34,7 +35,7 @@ def window1():
             if voice.name == 'Irina':
                 tts.setProperty('voice', voice.id)
          #c tts.say(text)
-        tts.say("чтобы выйти, или закрыть программу скажите выйти!")
+        tts.say("запуск подождите 30 секунд, а чтобы отключить микрофон скажите выход!")
         tts.runAndWait()
         
 
@@ -54,8 +55,9 @@ def window1():
                             yield answer ["text"]
 
         for text in listen():
-            print(text) #  выводит на консоль то что слышал !!!!
-            pyautogui.press(text)
+            
+            
+
     
 
 
@@ -72,6 +74,42 @@ def window1():
                 
             elif text =="как твойии дела":
                 print("вопрос был как твойии дела!!!")
+
+            elif text =="абзац" or text=="новая строка":
+                pyautogui.press("enter")
+            elif text=="точка" :
+                pyautogui.press(".")
+            elif text=="тире":
+                pyautogui.press("-")
+            elif text=="запятая":
+                pyautogui.press(",")
+            elif text =="вопросительный знак":
+                pyautogui.press("?")
+            elif text=="точка с запятой":
+                pyautogui.press(";")
+
+            elif text=="двоеточие":
+                pyautogui.press(":")
+            elif text=="восклицательный знак":
+                pyautogui.press("!")
+            elif text=="открыть скобку":
+                pyautogui.press("(")
+            elif text=="закрыть скобку":
+                pyautogui.press(")")
+            elif text=="пробел":
+                pyautogui.press("space")
+            elif text=="удалить":
+                pyautogui.press("backspace")
+            else:
+
+                send_keys(text, with_spaces=True) #выводит то что находиться на text 
+
+
+                
+
+
+
+
 
 
 
